@@ -3,8 +3,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 
 // TODO: Create an array of questions for user input
-inquirer
-  .prompt([
+const questions = [
     {
       type: 'input',
       name: 'title',
@@ -13,17 +12,27 @@ inquirer
     {
       type: 'input',
       name: 'description',
-      message: 'Give a breif desciption of your product any Installations, Usages, Contributors, or Tests?',
+      message: 'Give a breif DESCRIPTION of your product.',
+      },
+    {
+      type: 'input',
+      name: 'installation',
+      message: 'Give a breif desciption of your products INSTALLATION instructions.',
     },
     {
       type: 'input',
-      name: 'Github',
-      message: 'What is your Github username?',   
-     },
+      name: 'usage',
+      message: 'What is the USAGE information for your poroject?',
+    },
     {
       type: 'input',
-      name: 'email',
-      message: 'What is your email address?',
+      name: 'contribution',
+      message: 'What are the CONTRIBUTION guidelines for your project?',
+    },
+    {
+      type: 'input',
+      name: 'test',
+      message: 'What are the TEST instructions for your project?',
     },
     {
       type: 'list',
@@ -31,21 +40,30 @@ inquirer
       name: 'contact',
       choices: ['MIT', 'Apache2.0', 'unlicensed'],
     },
-  ])
-  .then((data) => {
-    const filename = `${data.name.toLowerCase().split(' ').join('')}.json`;
-
-    fs.writeFile(filename, JSON.stringify(data, null, '\t'), (err) =>
-      err ? console.log(err) : console.log('Success!')
+    {
+      type: 'input',
+      name: 'github',
+      message: 'What is your Github username?',   
+     },
+    {
+      type: 'input',
+      name: 'email',
+      message: 'What is your email address?',
+    },
+  ];
+  // TODO: Create a function to write README file
+  function writeToFile(data) {
+    fs.writeFile('README.md', data, (err) =>
+      err ? console.log(err) : console.log('Your README.md file is mow created!')
     );
-  });
-
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
-
+  };
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+    inquirer
+    .prompt(questions)
+    .then((responses) => writeToFile(generateMarkdown(responses)));
+}
 
 // Function call to initialize app
 init();
